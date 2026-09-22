@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: vihr-quiz-demo
+    runtime: static
+    buildCommand: echo "Static frontend ready"
+    staticPublishPath: public
+    autoDeployTrigger: commit
