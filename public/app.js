@@ -2081,8 +2081,14 @@ function handleRoomMessage(msg) {
         // lobby screen — the room-code banner, chat FAB and everything else
         // stay untouched, so they don't replay their entrance animation.
         const listEl = document.getElementById('roomMemberListWrap');
-        if (listEl) {
+        const avatarEl = document.getElementById('roomCapacityAvatars');
+        const capacityEl = document.getElementById('roomCapacityCount');
+        const playerCountEl = document.getElementById('roomPlayerCountLabel');
+        if (listEl && avatarEl && capacityEl && playerCountEl) {
           listEl.innerHTML = roomMemberListHTML();
+          avatarEl.innerHTML = roomCapacityAvatarsHTML(state.roomMembers);
+          capacityEl.innerHTML = roomCapacityCountHTML(state.room, state.roomMembers);
+          playerCountEl.innerHTML = roomPlayerCountLabelHTML(state.room, state.roomMembers);
           bindRoomMemberList();
         } else {
           document.getElementById('appMain').innerHTML = roomLobbyHTML();
@@ -2397,6 +2403,19 @@ function bindRoomMemberList() {
   });
 }
 
+function roomCapacityAvatarsHTML(members) {
+  return members.slice(0, 5).map((m) => avatarHTML(m, 'sm')).join('') +
+    (members.length > 5 ? `<span class="avatar sm room-browse-more">+${members.length - 5}</span>` : '');
+}
+
+function roomCapacityCountHTML(room, members) {
+  return `${ICONS.users} ${members.length}${room.maxPlayers ? ` <span class="room-capacity-max">/ ${room.maxPlayers}</span>` : ` <span class="room-capacity-max">без лимита</span>`}`;
+}
+
+function roomPlayerCountLabelHTML(room, members) {
+  return `${ICONS.users} Игроки (${members.length}${room.maxPlayers ? ' / ' + room.maxPlayers : ''})`;
+}
+
 function roomLobbyHTML() {
   const room = state.room;
   if (!room) return `<div class="empty-state">${ICONS.users}<div class="title">Комната не найдена</div></div>`;
@@ -2422,13 +2441,8 @@ function roomLobbyHTML() {
     </div>
 
     <div class="room-capacity-pill">
-      <div class="room-capacity-avatars">
-        ${members.slice(0, 5).map((m) => avatarHTML(m, 'sm')).join('')}
-        ${members.length > 5 ? `<span class="avatar sm room-browse-more">+${members.length - 5}</span>` : ''}
-      </div>
-      <span class="room-capacity-count">
-        ${ICONS.users} ${members.length}${room.maxPlayers ? ` <span class="room-capacity-max">/ ${room.maxPlayers}</span>` : ` <span class="room-capacity-max">без лимита</span>`}
-      </span>
+      <div class="room-capacity-avatars" id="roomCapacityAvatars">${roomCapacityAvatarsHTML(members)}</div>
+      <span class="room-capacity-count" id="roomCapacityCount">${roomCapacityCountHTML(room, members)}</span>
     </div>
 
     <div class="section-label">Общее</div>
@@ -2466,7 +2480,7 @@ function roomLobbyHTML() {
       </div>
     ` : ''}
 
-    <div class="section-label">Игроки (${members.length}${room.maxPlayers ? ' / ' + room.maxPlayers : ''})</div>
+    <div class="section-label" id="roomPlayerCountLabel">${roomPlayerCountLabelHTML(room, members)}</div>
     <div id="roomMemberListWrap">${roomMemberListHTML()}</div>
 
     <div style="margin-top:22px;">
