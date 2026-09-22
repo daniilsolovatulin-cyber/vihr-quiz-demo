@@ -2089,6 +2089,8 @@ function handleRoomMessage(msg) {
           avatarEl.innerHTML = roomCapacityAvatarsHTML(state.roomMembers);
           capacityEl.innerHTML = roomCapacityCountHTML(state.room, state.roomMembers);
           playerCountEl.innerHTML = roomPlayerCountLabelHTML(state.room, state.roomMembers);
+          const startBtn = document.getElementById('startRoomGameBtn');
+          if (startBtn) startBtn.disabled = state.room.status === 'generating' || state.roomMembers.length === 0;
           bindRoomMemberList();
         } else {
           document.getElementById('appMain').innerHTML = roomLobbyHTML();
