@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Вихрь — викторина</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="floatbg" aria-hidden="true"><div class="floatbg-item" style="top:6%;left:8%;width:64px;height:64px;animation-duration:16s;animation-delay:0s;--drift:14px;--rot:4deg"><img src="images/quizme-1.png" alt="" draggable="false"></div><div class="floatbg-item" style="top:14%;left:78%;width:81px;height:81px;animation-duration:23s;animation-delay:-3.1s;--drift:19px;--rot:-7deg"><img src="images/quizme-2.png" alt="" draggable="false"></div><div class="floatbg-item" style="top:58%;left:4%;width:98px;height:98px;animation-duration:16s;animation-delay:-6.2s;--drift:24px;--rot:10deg"><img src="images/quizme-3.png" alt="" draggable="false"></div><div class="floatbg-item" style="top:72%;left:84%;width:69px;height:69px;animation-duration:23s;animation-delay:-9.3s;--drift:29px;--rot:-4deg"><img src="images/quizme-4.png" alt="" draggable="false"></div><div class="floatbg-item" style="top:30%;left:46%;width:86px;height:86px;animation-duration:16s;animation-delay:-12.4s;--drift:16px;--rot:7deg"><img src="images/quizme-5.png" alt="" draggable="false"></div><div class="floatbg-item" style="top:82%;left:38%;width:103px;height:103px;animation-duration:23s;animation-delay:-15.5s;--drift:21px;--rot:-10deg"><img src="images/quizme-6.png" alt="" draggable="false"></div><div class="floatbg-item" style="top:4%;left:52%;width:74px;height:74px;animation-duration:16s;animation-delay:-18.6s;--drift:26px;--rot:4deg"><img src="images/quizme-7.png" alt="" draggable="false"></div><div class="floatbg-item" style="top:46%;left:90%;width:91px;height:91px;animation-duration:23s;animation-delay:-21.7s;--drift:31px;--rot:-7deg"><img src="images/quizme-8.png" alt="" draggable="false"></div></div>
+
+<div id="app">
+  <div id="appHeader"></div>
+  <div id="appMain"></div>
+</div>
+
+<div class="modal-overlay" id="settingsOverlay">
+  <div class="modal-sheet">
+    <div class="modal-head">
+      <h3>Настройки</h3>
+      <button class="icon-btn" id="closeSettings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div id="soundSettings"></div>
+    <div class="hint" style="margin:18px 0 0;">Вопросы генерируются защищённо на сервере. При необходимости личный ключ можно временно указать в настройке одиночной игры.</div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="leaveRoomOverlay">
+  <div class="modal-sheet">
+    <div class="modal-head">
+      <h3 id="leaveRoomTitle">Выйти из лобби?</h3>
+      <button class="icon-btn" id="closeLeaveRoomModal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="field-hint" id="leaveRoomBody" style="margin-bottom:18px;">Если выйдешь, придётся заново вводить код комнаты, чтобы вернуться.</div>
+    <div style="display:flex; gap:10px; flex-direction:column;">
+      <button class="btn-ghost" id="stayInRoomBtn">Вернуться в лобби</button>
+      <button class="btn-primary" id="confirmLeaveRoomBtn" style="background:var(--bad); color:#fff;">Всё равно выйти</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="profileOverlay">
+  <div class="modal-sheet" id="profileSheet">
+    <div class="modal-head">
+      <h3>Профиль игрока</h3>
+      <button class="icon-btn" id="closeProfileModal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div id="profileBody"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="chatOverlay">
+  <div class="modal-sheet chat-sheet" id="chatSheet">
+    <div class="modal-head">
+      <h3 id="chatTitle">Чат лобби</h3>
+      <button class="icon-btn" id="closeChatModal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="chip-row" id="chatTabs" style="margin-bottom:10px;"></div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-input-row">
+      <input type="text" id="chatInput" class="chat-input" placeholder="Написать сообщение..." maxlength="500" autocomplete="off">
+      <button class="icon-btn chat-send-btn" id="chatSendBtn"></button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="config.js?v=20260922-1"></script>
+<script src="icons.js?v=20260922-1"></script>
+<script src="api.js?v=20260922-1"></script>
+<script src="sound.js?v=20260922-1"></script>
+<script src="effects.js?v=20260922-1"></script>
+<script src="app.js?v=20260922-1"></script>
+</body>
+</html>
